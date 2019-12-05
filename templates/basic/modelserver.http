@@ -1,7 +1,7 @@
-GET http://localhost:1111/model
+GET http://localhost:1111/models/default
 
 ###
-GET http://localhost:1111/logs
+GET http://localhost:1111/models/default/logs
 
 ###
-POST http://localhost:1111/model/refresh
+POST http://localhost:1111/models/default/refresh
