@@ -1,6 +1,6 @@
 {
   "name": "create-quick-qui",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "a creator of quick-qui",
   "bin": {
     "create-quick-qui": "dist/index.js"
