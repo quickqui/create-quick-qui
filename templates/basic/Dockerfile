@@ -1,4 +1,4 @@
-FROM tarampampam/node:alpine
+FROM node:12.12.0-alpine
 
 WORKDIR /usr/app
 
