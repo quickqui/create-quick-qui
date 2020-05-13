@@ -7,6 +7,7 @@ import * as path from "path";
 import { questions } from "./variables";
 import * as ejs from "ejs";
 import * as chalk from "chalk";
+import { childProcessSync, log } from "./Util";
 
 prog
   .version("1.0.0")
@@ -28,6 +29,12 @@ prog
         ...response,
         ...{ template: templateName }
       });
+
+       const runInstallPath = targetPath;
+       log.info(`run npm install at - ${runInstallPath}`);
+       childProcessSync("npm", ["install"], runInstallPath);
+       log.info(`npm install finished`);
+
     })();
   });
 
@@ -44,7 +51,6 @@ function createDirectoryContents(
   // loop each file/folder
   filesToCreate.forEach(file => {
     const origFilePath = path.join(templatePath, file);
-    console.log(origFilePath);
     // get stats about the current file
     const stats = fs.statSync(origFilePath);
 
