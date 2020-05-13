@@ -13,7 +13,7 @@ export function filterObject(obj: any) {
 export function noEnvFound(name: string, help?: string) {
   fail(`env not found - ${name} - ${help ?? ""}`);
 }
-export const log = require("debug-logger")("quick-qui:builder");
+export const log = require("debug-logger")("quick-qui:create");
 
 export function childProcess(
   command: string,
