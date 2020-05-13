@@ -1,0 +1,47 @@
+functions:
+  - name: NotDone
+    extend: functions/list
+    annotations:
+      page:
+        menuPath: Issue/NotDone
+        icon: RadioButtonUnchecked
+    resource: Issue
+    query:
+      filter:
+        done: false
+      sort:
+        createdAt: DESC
+    links:
+      - label: FinishIssue
+        type: entity
+        page: FinishIssue
+  - name: Finished
+    annotations:
+      page:
+        menuPath: Issue/Finished
+        icon: CheckCircle
+    resource: Issue
+    extend: functions/list
+    query:
+      filter:
+        done: true
+      sort:
+        createdAt: DESC
+  - name: NotDoneCount
+    parameters:
+      icon: CheckCircle
+    resource: Issue
+    extend: functions/iconCard
+    query:
+      filter:
+        done: false
+  - name: IssueCreate
+    resource: Issue
+    extend: functions/create
+    annotations:
+      page:
+        menuPath: Issue/Create
+        icon: List
+    command: 
+      prefill: 
+        done: false

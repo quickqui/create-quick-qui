@@ -1,0 +1,12 @@
+pages:
+  - name: dashboard
+    order: -10000
+    menuPath: Dashboard
+    icon: Dashboard
+    layout: 
+      gride: 3
+    places:
+      - function: NotDoneCount
+        presentation: normal
+        layout:
+          size: 1

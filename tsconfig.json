@@ -8,5 +8,6 @@
     "noImplicitAny":false,
     "moduleResolution": "node",
     "allowSyntheticDefaultImports":true
-  }
+  },
+  "exclude": ["templates","dist"]
 }
