@@ -7,7 +7,7 @@ import * as path from "path";
 import { questions } from "./variables";
 import * as ejs from "ejs";
 import * as chalk from "chalk";
-import { childProcessSync, log } from "./Util";
+import { childProcessSync, log, filterObjectInternalKey } from "./Util";
 import { fail } from "assert";
 import assert = require("assert");
 
@@ -33,10 +33,7 @@ prog
       if (!createProject(targetPath)) {
         return;
       }
-      createDirectoryContents(localPath, templatePath, projectName, {
-        ...response,
-        ...{ template: templateName },
-      });
+      createDirectoryContents(localPath, templatePath, projectName, response);
 
       const runInstallPath = targetPath;
       log.info(`run npm install at - ${runInstallPath}`);
@@ -56,7 +53,7 @@ function createDirectoryContents(
   const distDir = path.join(localPath, projectName);
   fs.copySync(templatePath, distDir);
   const packageJson = fs.readJSONSync(path.join(distDir, "package.json"));
-  const newPackageJson = { ...JSON.parse(packageJson), ...{} };
+  const newPackageJson = { ...filterObjectInternalKey(packageJson), ...vars };
   fs.writeJSONSync(
     path.join(distDir, "package.json"),
     JSON.stringify(newPackageJson)
