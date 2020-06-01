@@ -1,6 +1,6 @@
 {
   "name": "@quick-qui/create-model-project",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "a creator of quick-qui model project",
   "bin": "dist/index.js",
   "main": "dist/index.js",
