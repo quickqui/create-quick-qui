@@ -1,7 +1,0 @@
-functions:
-  - name: FinishIssue
-    resource: Issue
-    extend: functions/edit
-    command:
-      prefill:
-        done: true

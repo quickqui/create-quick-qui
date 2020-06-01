@@ -1,8 +1,0 @@
-functions:
-  - name: UserList
-    resource: User
-    extend: 'functions/list'
-    annotations:
-      page:
-        menuPath: User/List
-        icon: People

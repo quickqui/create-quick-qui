@@ -2,20 +2,28 @@
 
 import * as prog from "caporal";
 import * as prompts from "prompts";
-import * as fs from "fs";
+import * as fs from "fs-extra";
 import * as path from "path";
 import { questions } from "./variables";
 import * as ejs from "ejs";
 import * as chalk from "chalk";
 import { childProcessSync, log } from "./Util";
+import { fail } from "assert";
+import assert = require("assert");
 
 prog
   .version("1.0.0")
   .argument("[template]", "Template to use, default is 'basic'", prog.STRING)
-  .action(args => {
+  .action((args) => {
     const templateName = args["template"] ?? "basic";
-
-    const templatePath = `${__dirname}/../templates/${templateName}`;
+    assert(templateName === "basic", "only basic template is supported");
+    const templatePackageName = "@quick-qui/prototype";
+    const templatePath = path.resolve(
+      __dirname,
+      "..",
+      "node_modules",
+      templatePackageName
+    );
     const localPath = process.cwd();
 
     (async () => {
@@ -27,14 +35,13 @@ prog
       }
       createDirectoryContents(localPath, templatePath, projectName, {
         ...response,
-        ...{ template: templateName }
+        ...{ template: templateName },
       });
 
-       const runInstallPath = targetPath;
-       log.info(`run npm install at - ${runInstallPath}`);
-       childProcessSync("npm", ["install"], runInstallPath);
-       log.info(`npm install finished`);
-
+      const runInstallPath = targetPath;
+      log.info(`run npm install at - ${runInstallPath}`);
+      childProcessSync("npm", ["install"], runInstallPath);
+      log.info(`npm install finished`);
     })();
   });
 
@@ -46,34 +53,14 @@ function createDirectoryContents(
   projectName: string,
   vars: object
 ) {
-  // read all files/folders (1 level) from template folder
-  const filesToCreate = fs.readdirSync(templatePath);
-  // loop each file/folder
-  filesToCreate.forEach(file => {
-    const origFilePath = path.join(templatePath, file);
-    // get stats about the current file
-    const stats = fs.statSync(origFilePath);
-
-    if (stats.isFile()) {
-      // read file content and transform it using template engine
-      let contents = fs.readFileSync(origFilePath, "utf8");
-      contents = render(contents, vars);
-
-      // write file to destination folder
-      const writePath = path.join(localPath, projectName, file);
-      fs.writeFileSync(writePath, contents, "utf8");
-    } else if (stats.isDirectory()) {
-      // create folder in destination folder
-      fs.mkdirSync(path.join(localPath, projectName, file));
-      // copy files/folder inside current folder recursively
-      createDirectoryContents(
-        localPath,
-        path.join(templatePath, file),
-        path.join(projectName, file),
-        vars
-      );
-    }
-  });
+  const distDir = path.join(localPath, projectName);
+  fs.copySync(templatePath, distDir);
+  const packageJson = fs.readJSONSync(path.join(distDir, "package.json"));
+  const newPackageJson = { ...JSON.parse(packageJson), ...{} };
+  fs.writeJSONSync(
+    path.join(distDir, "package.json"),
+    JSON.stringify(newPackageJson)
+  );
 }
 
 function createProject(projectPath: string) {

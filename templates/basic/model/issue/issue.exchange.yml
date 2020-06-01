@@ -1,8 +1,0 @@
-exchanges:
-  - name: FunctionsFake
-    resources: [Function, Issue]
-    from: "fake"
-    to: "back"
-    protocol: "dp"
-    parameters:
-      fakeData: "resolve:functionFake.yml"
