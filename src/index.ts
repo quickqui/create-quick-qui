@@ -56,7 +56,7 @@ function createDirectoryContents(
   const newPackageJson = { ...filterObjectInternalKey(packageJson), ...vars };
   fs.writeJSONSync(
     path.join(distDir, "package.json"),
-    JSON.stringify(newPackageJson)
+    newPackageJson
   );
 }
 
